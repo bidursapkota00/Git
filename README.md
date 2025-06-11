@@ -98,9 +98,6 @@ git config --global user.email "your.email@example.com"
 # Set default branch name
 git config --global init.defaultBranch main
 
-# Set default editor
-git config --global core.editor "code --wait"  # For VS Code
-
 # Check your configuration
 git config --list
 ```
@@ -218,6 +215,7 @@ git commit -m "refactor: extract utility functions"
 
 ```bash
 # Fix the last commit message
+# To amend any commit message, requires rebase
 git commit --amend -m "New commit message"
 
 # Add forgotten files to last commit
