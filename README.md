@@ -556,7 +556,7 @@ git revert HEAD
 git revert <commit-hash>
 
 # Revert multiple commits
-git revert HEAD~3..HEAD
+git revert HEAD~3
 ```
 
 ### Reset vs Revert Example
