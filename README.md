@@ -697,7 +697,17 @@ git diff HEAD origin/main    # See what changed
 git merge origin/main        # Merge when ready
 ```
 
-#### Pull (Fetch + Merge)
+#### Use fetch to download branch created by others and checkout to that branch
+
+```bash
+# First, fetch all remote branches
+git fetch origin
+
+# Create and switch to local auth branch tracking the remote
+git checkout -b auth origin/auth
+```
+
+#### Pull (Fetch + Merge) - Only for current branch
 
 ```bash
 # Pull current branch
