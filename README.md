@@ -689,6 +689,14 @@ git fetch origin
 git fetch origin main
 ```
 
+#### After fetching, you can review changes before deciding to merge:
+
+```bash
+git fetch origin
+git diff HEAD origin/main    # See what changed
+git merge origin/main        # Merge when ready
+```
+
 #### Pull (Fetch + Merge)
 
 ```bash
