@@ -982,6 +982,7 @@ git rebase -i HEAD~3
 # reword - change commit message
 # edit - modify commit
 # squash - combine with previous commit
+# fixup - like squash; combines the commit with the previous commit but automatically discards the fixup commit's message, keeping only the previous commit's message
 # drop - remove commit
 ```
 
@@ -1098,6 +1099,328 @@ git add file2.txt
 git commit -m "Add file2 functionality"
 git rebase --continue
 ```
+
+# Complete Git Rebase Tutorial
+
+## Step 1: Create Repository and Initial Setup
+
+```bash
+# Create and initialize repository
+mkdir git-rebase-demo
+cd git-rebase-demo
+git init
+```
+
+**Output:**
+
+```
+Initialized empty Git repository in /path/to/git-rebase-demo/.git/
+```
+
+## Step 2: Create Initial Commits on Main Branch
+
+```bash
+# Create first commit
+echo "# My Project" > README.md
+git add README.md
+git commit -m "Initial commit: Add README"
+
+# Create second commit
+echo "print('Hello World')" > main.py
+git add main.py
+git commit -m "Add main.py file"
+
+# Create third commit
+echo "# Installation" >> README.md
+git add README.md
+git commit -m "Update README with installation"
+```
+
+**Check commit history:**
+
+```bash
+git log --oneline
+```
+
+**Output:**
+
+```
+c3d4e5f Update README with installation
+b2c3d4e Add main.py file
+a1b2c3d Initial commit: Add README
+```
+
+## Step 3: Create Feature Branch
+
+```bash
+# Create and switch to feature branch
+git checkout -b feature/user-input
+```
+
+**Output:**
+
+```
+Switched to a new branch 'feature/user-input'
+```
+
+## Step 4: Add Commits to Feature Branch
+
+```bash
+# First feature commit
+echo "name = input('Enter your name: ')" >> main.py
+git add main.py
+git commit -m "Add user input for name"
+
+# Second feature commit (with typo)
+echo "print('Hello', nam)" >> main.py
+git add main.py
+git commit -m "Add greeting with typo"
+
+# Third feature commit (fix typo)
+sed -i 's/nam/name/' main.py
+git add main.py
+git commit -m "Fix typo in greeting"
+
+# Fourth feature commit
+echo "print('Welcome to our app!')" >> main.py
+git add main.py
+git commit -m "Add welcome message"
+```
+
+**Check feature branch history:**
+
+```bash
+git log --oneline
+```
+
+**Output:**
+
+```
+h7i8j9k Add welcome message
+g6h7i8j Fix typo in greeting
+f5g6h7i Add greeting with typo
+e4f5g6h Add user input for name
+c3d4e5f Update README with installation
+b2c3d4e Add main.py file
+a1b2c3d Initial commit: Add README
+```
+
+## Step 5: Meanwhile, Main Branch Gets Updates
+
+```bash
+# Switch back to main
+git checkout main
+
+# Add new commit to main
+echo "Requirements: Python 3.6+" > requirements.txt
+git add requirements.txt
+git commit -m "Add requirements file"
+```
+
+**Check main branch:**
+
+```bash
+git log --oneline
+```
+
+**Output:**
+
+```
+d4e5f6g Add requirements file
+c3d4e5f Update README with installation
+b2c3d4e Add main.py file
+a1b2c3d Initial commit: Add README
+```
+
+## Step 6: Interactive Rebase to Clean Up Feature Branch
+
+```bash
+# Switch back to feature branch
+git checkout feature/user-input
+
+# Start interactive rebase for last 4 commits
+git rebase -i HEAD~4
+```
+
+**Editor opens with:**
+
+```
+pick e4f5g6h Add user input for name
+pick f5g6h7i Add greeting with typo
+pick g6h7i8j Fix typo in greeting
+pick h7i8j9k Add welcome message
+
+# Rebase c3d4e5f..h7i8j9k onto c3d4e5f (4 commands)
+```
+
+**Edit to:**
+
+```
+pick e4f5g6h Add user input for name
+squash f5g6h7i Add greeting with typo
+squash g6h7i8j Fix typo in greeting
+pick h7i8j9k Add welcome message
+```
+
+**Save and close editor. New editor opens for commit message:**
+
+```
+# This is a combination of 3 commits.
+# This is the 1st commit message:
+
+Add user input for name
+
+# This is the commit message #2:
+
+Add greeting with typo
+
+# This is the commit message #3:
+
+Fix typo in greeting
+```
+
+**Edit to:**
+
+```
+Add user input and greeting functionality
+
+- Prompt user for their name
+- Display personalized greeting
+```
+
+**Output after rebase:**
+
+```
+Successfully rebased and updated refs/heads/feature/user-input.
+```
+
+**Check cleaned history:**
+
+```bash
+git log --oneline
+```
+
+**Output:**
+
+```
+i8j9k0l Add welcome message
+j9k0l1m Add user input and greeting functionality
+c3d4e5f Update README with installation
+b2c3d4e Add main.py file
+a1b2c3d Initial commit: Add README
+```
+
+## Step 7: Rebase Feature Branch onto Updated Main
+
+```bash
+# Rebase feature branch onto main
+git rebase main
+```
+
+**Output:**
+
+```
+Successfully rebased and updated refs/heads/feature/user-input.
+```
+
+**Check final history:**
+
+```bash
+git log --oneline
+```
+
+**Output:**
+
+```
+k0l1m2n Add welcome message
+l1m2n3o Add user input and greeting functionality
+d4e5f6g Add requirements file
+c3d4e5f Update README with installation
+b2c3d4e Add main.py file
+a1b2c3d Initial commit: Add README
+```
+
+## Step 8: Verify the Changes
+
+```bash
+# Check the final main.py content
+cat main.py
+```
+
+**Output:**
+
+```
+print('Hello World')
+name = input('Enter your name: ')
+print('Hello', name)
+print('Welcome to our app!')
+```
+
+**Check branch structure:**
+
+```bash
+git log --oneline --graph --all
+```
+
+**Output:**
+
+```
+* k0l1m2n (HEAD -> feature/user-input) Add welcome message
+* l1m2n3o Add user input and greeting functionality
+* d4e5f6g (main) Add requirements file
+* c3d4e5f Update README with installation
+* b2c3d4e Add main.py file
+* a1b2c3d Initial commit: Add README
+```
+
+## Step 9: Merge Back to Main
+
+```bash
+# Switch to main and merge
+git checkout main
+git merge feature/user-input
+```
+
+**Output:**
+
+```
+Updating d4e5f6g..k0l1m2n
+Fast-forward
+ main.py | 3 +++
+ 1 file changed, 3 insertions(+)
+```
+
+**Final check:**
+
+```bash
+git log --oneline
+```
+
+**Output:**
+
+```
+k0l1m2n Add welcome message
+l1m2n3o Add user input and greeting functionality
+d4e5f6g Add requirements file
+c3d4e5f Update README with installation
+b2c3d4e Add main.py file
+a1b2c3d Initial commit: Add README
+```
+
+## Summary
+
+- **Interactive rebase** (`git rebase -i`) cleaned up messy commits by squashing related changes
+- **Branch rebase** (`git rebase main`) moved feature commits on top of updated main branch
+- Result: Clean, linear history with logical commit groupings
+- **Fast-forward merge** was possible due to rebasing
+
+## Common Rebase Commands Reference
+
+- `git rebase -i HEAD~n` - Interactive rebase last n commits
+- `git rebase <branch>` - Rebase current branch onto target branch
+- `git rebase --continue` - Continue after resolving conflicts
+- `git rebase --abort` - Cancel rebase operation
+- `git push --force-with-lease` - Safely push rebased commits
 
 ---
 
