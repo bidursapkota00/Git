@@ -607,6 +607,9 @@ git clone git@github.com:username/repo-name.git  # SSH
 # Add remote origin
 git remote add origin https://github.com/username/repo-name.git
 
+# update repo url
+git remote set-url origin https://github.com/username/repository.git
+
 # Check remotes
 git remote -v
 
