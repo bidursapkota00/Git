@@ -2,38 +2,23 @@
 
 ## Table of Contents
 
-1. [Course Orientation](#course-orientation)
-2. [Introducing Git](#introducing-git)
-3. [Installation & Setup](#installation--setup)
-4. [The Very Basics Of Git: Adding & Committing](#the-very-basics-of-git-adding--committing)
-5. [Commits In Detail (And Related Topics)](#commits-in-detail-and-related-topics)
-6. [Working With Branches](#working-with-branches)
-7. [Merging Branches, Oh Boy!](#merging-branches-oh-boy)
-8. [Comparing Changes With Git Diff](#comparing-changes-with-git-diff)
-9. [The Ins and Outs of Stashing](#the-ins-and-outs-of-stashing)
-10. [Undoing Changes & Time Traveling](#undoing-changes--time-traveling)
-11. [GitHub: The Basics](#github-the-basics)
-12. [Fetching & Pulling](#fetching--pulling)
-13. [GitHub Grab Bag: Odds & Ends](#github-grab-bag-odds--ends)
-14. [Git Collaboration Workflows](#git-collaboration-workflows)
-15. [Rebasing: The Scariest Git Command?](#rebasing-the-scariest-git-command)
-16. [Cleaning Up History With Interactive Rebase](#cleaning-up-history-with-interactive-rebase)
-17. [Git Tags: Marking Important Moments In History](#git-tags-marking-important-moments-in-history)
-18. [The Power of Reflogs - Retrieving "Lost" Work](#the-power-of-reflogs---retrieving-lost-work)
-
----
-
-## Course Orientation
-
-Welcome to the comprehensive Git course! This guide will take you from a complete beginner to an advanced Git user. Git is the most popular version control system used by developers worldwide, and mastering it is essential for modern software development.
-
-### What You'll Learn
-
-- Complete Git workflow from initialization to collaboration
-- Advanced Git features and best practices
-- GitHub integration and remote repository management
-- Problem-solving techniques for common Git scenarios
-- Professional workflows used in real-world projects
+1. [Introducing Git](#introducing-git)
+2. [Installation & Setup](#installation--setup)
+3. [The Very Basics Of Git: Adding & Committing](#the-very-basics-of-git-adding--committing)
+4. [Commits In Detail (And Related Topics)](#commits-in-detail-and-related-topics)
+5. [Working With Branches](#working-with-branches)
+6. [Merging Branches, Oh Boy!](#merging-branches-oh-boy)
+7. [Comparing Changes With Git Diff](#comparing-changes-with-git-diff)
+8. [The Ins and Outs of Stashing](#the-ins-and-outs-of-stashing)
+9. [Undoing Changes & Time Traveling](#undoing-changes--time-traveling)
+10. [GitHub: The Basics](#github-the-basics)
+11. [Fetching & Pulling](#fetching--pulling)
+12. [GitHub Grab Bag: Odds & Ends](#github-grab-bag-odds--ends)
+13. [Git Collaboration Workflows](#git-collaboration-workflows)
+14. [Rebasing: The Scariest Git Command?](#rebasing-the-scariest-git-command)
+15. [Cleaning Up History With Interactive Rebase](#cleaning-up-history-with-interactive-rebase)
+16. [Git Tags: Marking Important Moments In History](#git-tags-marking-important-moments-in-history)
+17. [The Power of Reflogs - Retrieving "Lost" Work](#the-power-of-reflogs---retrieving-lost-work)
 
 ---
 
@@ -784,23 +769,6 @@ git push origin main
 - Request specific reviewers
 - Use draft PRs for work in progress
 - Link to related issues or documentation
-
-### GitHub Issues
-
-```markdown
-## Bug Report
-
-**Description:** Brief description of the bug
-**Steps to Reproduce:**
-
-1. Go to page X
-2. Click button Y
-3. Error occurs
-
-**Expected Behavior:** What should happen
-**Actual Behavior:** What actually happens
-**Environment:** Browser, OS, version
-```
 
 ### GitHub Pages
 
