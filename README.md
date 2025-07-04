@@ -91,6 +91,12 @@ git config --list
 git --version
 ```
 
+### Make vscode default editor of git
+
+```bash
+git config --global core.editor "code --wait"
+```
+
 ---
 
 ## The Very Basics Of Git: Adding & Committing
