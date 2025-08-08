@@ -7,15 +7,15 @@
 3. [The Very Basics Of Git: Adding & Committing](#the-very-basics-of-git-adding--committing)
 4. [Commits In Detail (And Related Topics)](#commits-in-detail-and-related-topics)
 5. [Working With Branches](#working-with-branches)
-6. [Merging Branches, Oh Boy!](#merging-branches-oh-boy)
+6. [Merging Branches](#merging-branches)
 7. [Comparing Changes With Git Diff](#comparing-changes-with-git-diff)
 8. [The Ins and Outs of Stashing](#the-ins-and-outs-of-stashing)
 9. [Undoing Changes & Time Traveling](#undoing-changes--time-traveling)
 10. [GitHub: The Basics](#github-the-basics)
 11. [Fetching & Pulling](#fetching--pulling)
-12. [GitHub Grab Bag: Odds & Ends](#github-grab-bag-odds--ends)
+12. [GitHub Basics Part 2](#github-basics-part-2)
 13. [Git Collaboration Workflows](#git-collaboration-workflows)
-14. [Rebasing: The Scariest Git Command?](#rebasing-the-scariest-git-command)
+14. [Rebasing](#rebasing)
 15. [Cleaning Up History With Interactive Rebase](#cleaning-up-history-with-interactive-rebase)
 16. [Git Tags: Marking Important Moments In History](#git-tags-marking-important-moments-in-history)
 17. [The Power of Reflogs - Retrieving "Lost" Work](#the-power-of-reflogs---retrieving-lost-work)
@@ -290,7 +290,7 @@ git branch -m old-name new-name
 
 ---
 
-## Merging Branches, Oh Boy!
+## Merging Branches
 
 ### Types of Merges
 
@@ -752,7 +752,7 @@ git commit
 
 ---
 
-## GitHub Grab Bag: Odds & Ends
+## GitHub Basics Part 2
 
 ### Forking Workflow
 
@@ -918,7 +918,7 @@ git push origin new-feature
 
 ---
 
-## Rebasing: The Scariest Git Command?
+## Rebasing
 
 ### What is Rebasing?
 
