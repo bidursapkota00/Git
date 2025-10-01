@@ -368,6 +368,23 @@ git merge --squash feature-branch
 git commit -m "Add feature XYZ"
 ```
 
+### Merge a single file from a specific branch into your main branch
+
+```bash
+# Make sure you're on main branch
+git checkout main
+
+# Fetch latest updates
+git fetch origin
+
+# Checkout the specific file from another branch
+git checkout branch_name -- path/to/your/file
+
+# Stage and commit the change
+git add path/to/your/file
+git commit -m "Merged file from branch_name into main"
+```
+
 ---
 
 ## Comparing Changes With Git Diff
