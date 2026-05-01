@@ -1,24 +1,24 @@
-# Complete Git Course Guide
+# Complete Git Self-Help Guide
 
 ## Table of Contents
 
 1. [Introducing Git](#introducing-git)
 2. [Installation & Setup](#installation--setup)
-3. [The Very Basics Of Git: Adding & Committing](#the-very-basics-of-git-adding--committing)
-4. [Commits In Detail (And Related Topics)](#commits-in-detail-and-related-topics)
+3. [The Very Basics: Adding & Committing](#the-very-basics-adding--committing)
+4. [Commits In Detail](#commits-in-detail)
 5. [Working With Branches](#working-with-branches)
 6. [Merging Branches](#merging-branches)
 7. [Comparing Changes With Git Diff](#comparing-changes-with-git-diff)
-8. [The Ins and Outs of Stashing](#the-ins-and-outs-of-stashing)
+8. [Stashing](#stashing)
 9. [Undoing Changes & Time Traveling](#undoing-changes--time-traveling)
 10. [GitHub: The Basics](#github-the-basics)
 11. [Fetching & Pulling](#fetching--pulling)
 12. [GitHub Basics Part 2](#github-basics-part-2)
 13. [Git Collaboration Workflows](#git-collaboration-workflows)
 14. [Rebasing](#rebasing)
-15. [Cleaning Up History With Interactive Rebase](#cleaning-up-history-with-interactive-rebase)
-16. [Git Tags: Marking Important Moments In History](#git-tags-marking-important-moments-in-history)
-17. [The Power of Reflogs - Retrieving "Lost" Work](#the-power-of-reflogs---retrieving-lost-work)
+15. [Interactive Rebase](#interactive-rebase)
+16. [Git Tags](#git-tags)
+17. [Reflogs - Retrieving Lost Work](#reflogs---retrieving-lost-work)
 
 ---
 
@@ -26,7 +26,7 @@
 
 ### What is Git?
 
-Git is a distributed version control system that tracks changes in files and coordinates work among multiple people. It was created by Linus Torvalds in 2005 for Linux kernel development.
+Git is a **distributed version control system** created by Linus Torvalds in 2005. It tracks changes in files and coordinates work among multiple people.
 
 ### Key Concepts
 
@@ -49,22 +49,15 @@ Git is a distributed version control system that tracks changes in files and coo
 
 ### Installing Git
 
-#### Windows
+**Windows**: Download from [git-scm.com](https://git-scm.com), run installer with default settings, open Git Bash or Command Prompt.
 
-1. Download Git from [git-scm.com](https://git-scm.com)
-2. Run the installer with default settings
-3. Open Git Bash or Command Prompt
-
-#### macOS
+**macOS**:
 
 ```bash
-# Using Homebrew
 brew install git
-
-# Or download from git-scm.com
 ```
 
-#### Linux (Ubuntu/Debian)
+**Linux (Ubuntu/Debian)**:
 
 ```bash
 sudo apt update
@@ -74,14 +67,9 @@ sudo apt install git
 ### Initial Configuration
 
 ```bash
-# Set your name and email (required for commits)
 git config --global user.name "Your Name"
 git config --global user.email "your.email@example.com"
-
-# Set default branch name
 git config --global init.defaultBranch main
-
-# Check your configuration
 git config --list
 ```
 
@@ -91,7 +79,7 @@ git config --list
 git --version
 ```
 
-### Make vscode default editor of git
+### Set VS Code as Default Editor
 
 ```bash
 git config --global core.editor "code --wait"
@@ -99,71 +87,58 @@ git config --global core.editor "code --wait"
 
 ---
 
-## The Very Basics Of Git: Adding & Committing
+## The Very Basics: Adding & Committing
 
 ### Initializing a Repository
 
 ```bash
-# Create a new directory
 mkdir my-project
 cd my-project
-
-# Initialize Git repository
 git init
 ```
 
 ### The Three Areas
 
-1. **Working Directory**: Your actual files
-2. **Staging Area**: Files prepared for commit
-3. **Repository**: Committed snapshots
+1. **Working Directory**: Your actual files on disk
+2. **Staging Area**: Files prepared for the next commit
+3. **Repository**: Committed snapshots stored in `.git/`
 
 ### Basic Workflow
 
 ```bash
-# Check repository status
 git status
 
-# Add files to staging area
-git add filename.txt          # Add specific file
-git add .                     # Add all files
-git add *.js                  # Add all JavaScript files
+git add filename.txt          # Stage specific file
+git add .                     # Stage all files
+git add *.js                  # Stage all JavaScript files
 
-# Commit changes
 git commit -m "Initial commit"
 
-# View commit history
 git log
-git log --oneline            # Condensed view
+git log --oneline             # Condensed view
 ```
 
 ### Example Workflow
 
+1. Create a file called `hello.txt` with the content `Hello Git!`
+
+2. Check status — it shows as untracked:
+
 ```bash
-# Create a file
-echo "Hello Git!" > hello.txt
-
-# Check status
 git status
-# Output: Untracked files: hello.txt
+```
 
-# Add to staging
+3. Stage and commit:
+
+```bash
 git add hello.txt
-
-# Check status again
-git status
-# Output: Changes to be committed: new file: hello.txt
-
-# Commit
 git commit -m "Add hello.txt file"
-
-# View history
 git log --oneline
 ```
 
 ---
 
-## Commits In Detail (And Related Topics)
+## Commits In Detail
 
 ### Anatomy of a Commit
 
@@ -178,21 +153,18 @@ Each commit contains:
 ### Writing Good Commit Messages
 
 ```bash
-# Good commit messages
+# Good
 git commit -m "Add user authentication feature"
 git commit -m "Fix memory leak in image processing"
-git commit -m "Update README with installation instructions"
 
-# Bad commit messages
+# Bad
 git commit -m "stuff"
 git commit -m "fix"
-git commit -m "changes"
 ```
 
 ### Commit Message Conventions
 
 ```bash
-# Structure: <type>: <description>
 git commit -m "feat: add login functionality"
 git commit -m "fix: resolve null pointer exception"
 git commit -m "docs: update API documentation"
@@ -204,7 +176,6 @@ git commit -m "refactor: extract utility functions"
 
 ```bash
 # Fix the last commit message
-# To amend any commit message, requires rebase
 git commit --amend -m "New commit message"
 
 # Add forgotten files to last commit
@@ -215,14 +186,9 @@ git commit --amend --no-edit
 ### Viewing Commit Details
 
 ```bash
-# Show commit details
 git show
 git show <commit-hash>
-
-# Show files changed in commit
 git show --name-only <commit-hash>
-
-# Show statistics
 git show --stat <commit-hash>
 ```
 
@@ -232,60 +198,57 @@ git show --stat <commit-hash>
 
 ### What are Branches?
 
-Branches allow you to work on different features or experiments without affecting the main codebase. Think of them as parallel universes of your project.
+Branches let you work on different features or experiments without affecting the main codebase. Think of them as parallel universes of your project.
 
 ### Branch Commands
 
 ```bash
-# List all branches
-git branch
+git branch                            # List all branches
 
-# Create new branch
-git branch feature-login
+git branch feature-login              # Create new branch
 
-# Switch to branch
-git checkout feature-login
-# Or use newer syntax
-git switch feature-login
+git switch feature-login              # Switch to branch
+git checkout feature-login            # Older syntax
 
-# Create and switch in one command
-git checkout -b feature-signup
-# Or
-git switch -c feature-signup
+git switch -c feature-signup          # Create and switch
+git checkout -b feature-signup        # Older syntax
 
-# Delete branch
-git branch -d feature-login     # Safe delete
-git branch -D feature-login     # Force delete
+git branch -d feature-login           # Safe delete
+git branch -D feature-login           # Force delete
 ```
 
 ### Branch Workflow Example
 
+1. Start on the main branch:
+
 ```bash
-# Start on main branch
 git checkout main
+```
 
-# Create feature branch
+2. Create a feature branch:
+
+```bash
 git checkout -b add-shopping-cart
+```
 
-# Make changes
-echo "Shopping cart functionality" > cart.js
+3. Create a file called `cart.js` with your shopping cart code, then stage and commit:
+
+```bash
 git add cart.js
 git commit -m "Add shopping cart feature"
+```
 
-# Switch back to main
+4. Switch back to main — the `cart.js` file won't be visible here:
+
+```bash
 git checkout main
-
-# The cart.js file won't be visible here!
 ```
 
 ### Renaming Branches
 
 ```bash
-# Rename current branch
-git branch -m new-branch-name
-
-# Rename specific branch
-git branch -m old-name new-name
+git branch -m new-branch-name         # Rename current branch
+git branch -m old-name new-name       # Rename specific branch
 ```
 
 ---
@@ -294,93 +257,81 @@ git branch -m old-name new-name
 
 ### Types of Merges
 
-#### 1. Fast-Forward Merge
-
-When the target branch hasn't changed since branching:
+**Fast-Forward Merge** — when the target branch hasn't changed since branching:
 
 ```bash
-# On main branch
+git checkout main
 git merge feature-branch
-# Results in fast-forward merge
 ```
 
-#### 2. Three-Way Merge
-
-When both branches have new commits:
+**Three-Way Merge** — when both branches have new commits (creates a merge commit):
 
 ```bash
 git merge feature-branch
-# Creates a merge commit
 ```
 
 ### Merge Example
 
+1. Create and work on a feature branch:
+
 ```bash
-# Create and work on feature branch
 git checkout -b feature-navbar
-echo "Navigation bar" > navbar.js
+```
+
+2. Create a file called `navbar.js` with navigation bar code, then commit:
+
+```bash
 git add navbar.js
 git commit -m "Add navigation bar"
+```
 
-# Switch to main and make different changes
+3. Switch to main, create a file called `main.js` with main content, and commit:
+
+```bash
 git checkout main
-echo "Main content" > main.js
 git add main.js
 git commit -m "Add main content"
+```
 
-# Merge feature branch
+4. Merge the feature branch (creates a merge commit since both branches diverged):
+
+```bash
 git merge feature-navbar
-# This creates a merge commit
 ```
 
 ### Merge Conflicts
 
-When Git can't automatically merge:
+When Git can't automatically merge, it marks conflicts in the file:
 
-```bash
-# Conflict example
-git merge feature-branch
-# Output: CONFLICT (content): Merge conflict in file.txt
-
-# View conflicted files
-git status
-
-# Edit conflicted file - look for markers:
+```
 <<<<<<< HEAD
 Content from current branch
 =======
 Content from feature branch
 >>>>>>> feature-branch
+```
 
-# After resolving conflicts:
+Resolve by editing the file to keep the desired content, removing the markers, then:
+
+```bash
 git add file.txt
-git commit  # No message needed for merge commits
+git commit
 ```
 
 ### Merge Strategies
 
 ```bash
-# No fast-forward (always create merge commit)
-git merge --no-ff feature-branch
-
-# Squash merge (combine all commits into one)
-git merge --squash feature-branch
+git merge --no-ff feature-branch      # Always create merge commit
+git merge --squash feature-branch     # Combine all commits into one
 git commit -m "Add feature XYZ"
 ```
 
-### Merge a single file from a specific branch into your main branch
+### Merge a Single File from Another Branch
 
 ```bash
-# Make sure you're on main branch
 git checkout main
-
-# Fetch latest updates
 git fetch origin
-
-# Checkout the specific file from another branch
 git checkout branch_name -- path/to/your/file
-
-# Stage and commit the change
 git add path/to/your/file
 git commit -m "Merged file from branch_name into main"
 ```
@@ -392,29 +343,18 @@ git commit -m "Merged file from branch_name into main"
 ### Basic Diff Commands
 
 ```bash
-# Show unstaged changes
-git diff
-
-# Show staged changes
-git diff --staged
-# Or
-git diff --cached
-
-# Compare specific files
-git diff filename.txt
-
-# Compare branches
-git diff main feature-branch
-
-# Compare specific commits
-git diff commit1 commit2
+git diff                              # Unstaged changes
+git diff --staged                     # Staged changes
+git diff --cached                     # Same as --staged
+git diff filename.txt                 # Specific file
+git diff main feature-branch          # Between branches
+git diff commit1 commit2              # Between commits
 ```
 
-### Diff Output Explanation
+### Diff Output Explained
 
 ```diff
 diff --git a/file.txt b/file.txt
-index 83db48f..84d55c5 100644
 --- a/file.txt
 +++ b/file.txt
 @@ -1,3 +1,4 @@
@@ -425,88 +365,75 @@ index 83db48f..84d55c5 100644
  line 4
 ```
 
+- Lines starting with `-` were removed
+- Lines starting with `+` were added
+- Lines starting with a space are unchanged context
+
 ### Advanced Diff Options
 
 ```bash
-# Word-level diff
-git diff --word-diff
-
-# Show only names of changed files
-git diff --name-only
-
-# Show statistics
-git diff --stat
-
-# Ignore whitespace changes
-git diff --ignore-space-change
+git diff --word-diff                  # Word-level diff
+git diff --name-only                  # Only changed file names
+git diff --stat                       # Statistics
+git diff --ignore-space-change        # Ignore whitespace
 ```
 
 ---
 
-## The Ins and Outs of Stashing
+## Stashing
 
 ### What is Stashing?
 
-Stashing temporarily saves your uncommitted changes so you can work on something else and then come back and re-apply them.
+Stashing temporarily saves your uncommitted changes so you can work on something else and re-apply them later.
 
 ### Basic Stashing
 
 ```bash
-# Stash current changes
-git stash
-
-# List all stashes
-git stash list
-
-# Apply most recent stash
-git stash pop
-
-# Apply stash without removing it
-git stash apply
-
-# Drop a stash
-git stash drop
+git stash                             # Stash current changes
+git stash list                        # List all stashes
+git stash pop                         # Apply most recent stash and remove it
+git stash apply                       # Apply stash without removing it
+git stash drop                        # Drop a stash
 ```
 
 ### Advanced Stashing
 
 ```bash
-# Stash with message
-git stash push -m "Work in progress on user login"
-
-# Stash specific files
-git stash push -m "Partial work" file1.txt file2.txt
-
-# Stash including untracked files
-git stash -u
-
-# Apply specific stash
-git stash apply stash@{2}
-
-# Show stash contents
-git stash show -p stash@{0}
+git stash push -m "WIP: user login"   # Stash with message
+git stash push -m "Partial" f1.txt    # Stash specific files
+git stash -u                          # Include untracked files
+git stash apply stash@{2}             # Apply specific stash
+git stash show -p stash@{0}           # Show stash contents
 ```
 
 ### Stashing Workflow Example
 
+1. You're working on a feature — you've modified `feature.js` and staged it.
+
+2. An urgent bug fix is needed. Stash your work:
+
 ```bash
-# Working on feature
-echo "Incomplete feature" > feature.js
-git add feature.js
-
-# Urgent bug fix needed
 git stash push -m "Incomplete login feature"
+```
 
-# Switch to main and fix bug
+3. Switch to main, fix the bug, commit:
+
+```bash
 git checkout main
-echo "Bug fix" > bugfix.js
+```
+
+Create `bugfix.js` with the fix, then:
+
+```bash
 git add bugfix.js
 git commit -m "Fix critical bug"
+```
 
-# Return to feature work
+4. Return to feature branch and restore your stash:
+
+```bash
 git checkout feature-branch
 git stash pop
-# Continue working on feature.js
 ```
 
 ---
@@ -516,68 +443,41 @@ git stash pop
 ### Undoing Working Directory Changes
 
 ```bash
-# Discard changes in working directory
-git checkout -- filename.txt
-# Or newer syntax
-git restore filename.txt
-
-# Discard all working directory changes
-git checkout -- .
-git restore .
+git restore filename.txt              # Discard changes (new syntax)
+git checkout -- filename.txt          # Discard changes (old syntax)
+git restore .                         # Discard all changes
 ```
 
 ### Undoing Staged Changes
 
 ```bash
-# Unstage file
-git reset HEAD filename.txt
-# Or newer syntax
-git restore --staged filename.txt
-
-# Unstage all files
-git reset HEAD
+git restore --staged filename.txt     # Unstage (new syntax)
+git reset HEAD filename.txt           # Unstage (old syntax)
+git reset HEAD                        # Unstage all
 ```
 
 ### Undoing Commits
 
-#### 1. Reset (Changes History)
+**Reset** (rewrites history — use only on local/unpushed commits):
 
 ```bash
-# Soft reset - keep changes in staging
-git reset --soft HEAD~1
-
-# Mixed reset - keep changes in working directory
-git reset --mixed HEAD~1
-git reset HEAD~1  # Default is mixed
-
-# Hard reset - discard all changes
-git reset --hard HEAD~1
+git reset --soft HEAD~1               # Keep changes staged
+git reset --mixed HEAD~1              # Keep changes unstaged (default)
+git reset HEAD~1                      # Same as --mixed
+git reset --hard HEAD~1               # Discard all changes
 ```
 
-#### 2. Revert (Safe for Shared Repos)
+**Revert** (safe for shared repos — creates a new commit that undoes a previous one):
 
 ```bash
-# Create new commit that undoes previous commit
-git revert HEAD
-
-# Revert specific commit
-git revert <commit-hash>
-
-# Revert multiple commits
-git revert HEAD~3
+git revert HEAD                       # Undo last commit
+git revert <commit-hash>              # Undo specific commit
 ```
 
-### Reset vs Revert Example
+### When to Use Which
 
-```bash
-# Scenario: Need to undo last commit
-
-# Using reset (dangerous if already pushed)
-git reset --hard HEAD~1
-
-# Using revert (safe for shared repos)
-git revert HEAD
-```
+- **Reset**: You haven't pushed yet and want to redo commits
+- **Revert**: You've already pushed and need to undo safely
 
 ---
 
@@ -585,88 +485,55 @@ git revert HEAD
 
 ### What is GitHub?
 
-GitHub is a cloud-based Git repository hosting service that adds collaboration features, issue tracking, and project management tools.
+GitHub is a cloud-based Git hosting service that adds collaboration features, issue tracking, and project management.
 
-### Setting Up GitHub
-
-#### SSH Keys (Recommended)
+### SSH Key Setup (Recommended)
 
 ```bash
-# Generate SSH key
 ssh-keygen -t ed25519 -C "your.email@example.com"
-
-# Add to SSH agent
 eval "$(ssh-agent -s)"
 ssh-add ~/.ssh/id_ed25519
-
-# Copy public key to clipboard
 cat ~/.ssh/id_ed25519.pub
-# Add this to GitHub Settings > SSH Keys
 ```
 
-#### HTTPS with Personal Access Token
+Copy the output and add it to **GitHub → Settings → SSH Keys**.
 
-1. Go to GitHub Settings > Developer settings > Personal access tokens
-2. Generate new token with appropriate permissions
+### HTTPS with Personal Access Token
+
+1. GitHub Settings → Developer settings → Personal access tokens
+2. Generate token with appropriate permissions
 3. Use token as password when prompted
 
-#### Remove stored credentials (if using credential manager)
+### Remove Stored Credentials
 
 ```bash
 git config --global --unset credential.helper
-# Or on Windows/Mac, clear from credential manager
-
-# Push again - you'll be prompted for username/password
-git push origin main
+git push origin main                  # You'll be prompted again
 ```
 
 ### Repository Operations
 
 ```bash
-# Clone repository
-git clone https://github.com/username/repo-name.git
-git clone git@github.com:username/repo-name.git  # SSH
+git clone https://github.com/user/repo.git       # HTTPS
+git clone git@github.com:user/repo.git            # SSH
 
-# Add remote origin
-git remote add origin https://github.com/username/repo-name.git
+git remote add origin https://github.com/user/repo.git
+git remote set-url origin https://github.com/user/repo.git
+git remote -v                                      # Check remotes
 
-# update repo url
-git remote set-url origin https://github.com/username/repository.git
-
-# Check remotes
-git remote -v
-
-# Push to GitHub
-git push origin main
-
-# Set upstream for easier pushing
-git push -u origin main
-git push  # Now this works
+git push -u origin main               # Set upstream + push
+git push                              # After upstream is set
 ```
 
 ### GitHub Workflow
 
-```bash
-# 1. Clone or create repo
-git clone https://github.com/username/project.git
-cd project
-
-# 2. Create feature branch
-git checkout -b feature-new-header
-
-# 3. Make changes and commit
-echo "New header" > header.html
-git add header.html
-git commit -m "Add new header component"
-
-# 4. Push branch to GitHub
-git push origin feature-new-header
-
-# 5. Create Pull Request on GitHub
-# 6. Merge after review
-# 7. Delete branch after merge
-git branch -d feature-new-header
-```
+1. Clone or create repo
+2. Create feature branch: `git checkout -b feature-new-header`
+3. Create your files, stage, and commit
+4. Push branch: `git push origin feature-new-header`
+5. Create Pull Request on GitHub
+6. Merge after review
+7. Delete branch: `git branch -d feature-new-header`
 
 ---
 
@@ -675,96 +542,63 @@ git branch -d feature-new-header
 ### Understanding Remote Tracking
 
 ```bash
-# View remote branches
-git branch -r
-
-# View all branches (local and remote)
-git branch -a
-
-# View remote information
-git remote show origin
+git branch -r                         # Remote branches
+git branch -a                         # All branches
+git remote show origin                # Remote info
 ```
 
-### Fetch vs Pull
-
-#### Fetch (Download without Merging)
+### Fetch (Download Without Merging)
 
 ```bash
-# Fetch all branches from all remotes
-git fetch
-
-# Fetch specific remote
-git fetch origin
-
-# Fetch specific branch
-git fetch origin main
+git fetch                             # All remotes
+git fetch origin                      # Specific remote
+git fetch origin main                 # Specific branch
 ```
 
-#### After fetching, you can review changes before deciding to merge:
+After fetching, review before merging:
+
+```bash
+git diff HEAD origin/main             # See what changed
+git merge origin/main                 # Merge when ready
+```
+
+### Fetch and Checkout a Remote Branch
 
 ```bash
 git fetch origin
-git diff HEAD origin/main    # See what changed
-git merge origin/main        # Merge when ready
+git checkout -b auth origin/auth      # Track remote branch locally
 ```
 
-#### Use fetch to download branch created by others and checkout to that branch
+### Pull (Fetch + Merge)
 
 ```bash
-# First, fetch all remote branches
-git fetch origin
-
-# Create and switch to local auth branch tracking the remote
-git checkout -b auth origin/auth
+git pull                              # Current branch
+git pull origin main                  # Specific branch
+git pull --rebase                     # Rebase instead of merge
 ```
 
-#### Pull (Fetch + Merge) - Only for current branch
+### Daily Collaboration Workflow
 
 ```bash
-# Pull current branch
-git pull
-
-# Pull specific branch
-git pull origin main
-
-# Pull with rebase instead of merge
-git pull --rebase
-```
-
-### Collaboration Workflow
-
-```bash
-# Start of day - get latest changes
+# Morning — get latest
 git checkout main
 git pull origin main
 
-# Create feature branch from updated main
+# Create feature branch
 git checkout -b feature-user-profile
 
-# Work on feature...
+# Work, stage, commit...
 git add .
 git commit -m "Add user profile page"
 
-# Before pushing, get latest changes
+# Before pushing — sync with main
 git checkout main
 git pull origin main
-
-# Merge or rebase feature branch
 git checkout feature-user-profile
-git rebase main  # Or merge main into feature branch
+git rebase main
 
-# Push feature branch
+# Push
 git push origin feature-user-profile
-```
-
-### Handling Merge Conflicts During Pull
-
-```bash
-# Pull results in conflict
-git pull origin main
-# Fix conflicts in files
-git add conflicted-file.txt
-git commit
 ```
 
 ---
@@ -773,15 +607,22 @@ git commit
 
 ### Forking Workflow
 
+1. Fork repository on GitHub
+2. Clone your fork:
+
 ```bash
-# 1. Fork repository on GitHub
-# 2. Clone your fork
 git clone https://github.com/yourusername/forked-repo.git
+```
 
-# 3. Add upstream remote
+3. Add upstream remote:
+
+```bash
 git remote add upstream https://github.com/original-owner/repo.git
+```
 
-# 4. Keep fork updated
+4. Keep fork updated:
+
+```bash
 git fetch upstream
 git checkout main
 git merge upstream/main
@@ -790,57 +631,34 @@ git push origin main
 
 ### Pull Requests
 
-- Create descriptive titles and descriptions
+- Write descriptive titles and descriptions
 - Reference issues with `#issue-number`
 - Request specific reviewers
 - Use draft PRs for work in progress
-- Link to related issues or documentation
 
 ### GitHub Pages
 
-```bash
-# Deploy to GitHub Pages
-# 1. Create gh-pages branch
-git checkout -b gh-pages
+1. Create a `gh-pages` branch:
 
-# 2. Add HTML files
-echo "<h1>My Project</h1>" > index.html
+```bash
+git checkout -b gh-pages
+```
+
+2. Create a file called `index.html` with your HTML content.
+
+3. Stage, commit, and push:
+
+```bash
 git add index.html
 git commit -m "Add GitHub Pages site"
-
-# 3. Push to GitHub
 git push origin gh-pages
-
-# Site available at: https://username.github.io/repository-name
 ```
+
+Site available at: `https://username.github.io/repository-name`
 
 ### README Best Practices
 
-````markdown
-# Project Title
-
-Brief description of what this project does
-
-## Installation
-
-```bash
-npm install
-```
-````
-
-## Usage
-
-```bash
-npm start
-```
-
-## Contributing
-
-1. Fork the project
-2. Create feature branch
-3. Commit changes
-4. Push to branch
-5. Open Pull Request
+A good README includes: project title, brief description, installation steps, usage examples, and contribution guidelines.
 
 ---
 
@@ -848,16 +666,14 @@ npm start
 
 ### Centralized Workflow
 
-Simple workflow for small teams:
+Simple workflow for small teams — everyone works on the main branch:
 
 ```bash
-# Everyone works on main branch
 git clone repo
-# Make changes
 git add .
 git commit -m "Add feature"
-git pull  # Get latest changes
-git push  # Push your changes
+git pull
+git push
 ```
 
 ### Feature Branch Workflow
@@ -865,47 +681,44 @@ git push  # Push your changes
 Most common workflow:
 
 ```bash
-# 1. Create feature branch
 git checkout -b feature-user-auth
-
-# 2. Work on feature
 git add .
 git commit -m "Implement user authentication"
-
-# 3. Push branch
 git push origin feature-user-auth
-
-# 4. Create Pull Request
-# 5. Review and merge
-# 6. Delete branch
+# Create Pull Request → Review → Merge
 git branch -d feature-user-auth
 ```
 
 ### Gitflow Workflow
 
-More structured workflow for larger projects:
+Structured workflow for larger projects. Two permanent branches: `main` (production) and `develop`.
+
+**Feature branches** branch from `develop`:
 
 ```bash
-# Main branches: main (production) and develop
-
-# Feature branches
 git checkout develop
 git checkout -b feature/user-login
-# Work on feature
+# Work on feature...
 git checkout develop
 git merge feature/user-login
+```
 
-# Release branches
+**Release branches** branch from `develop`, merge into both `main` and `develop`:
+
+```bash
 git checkout -b release/1.2.0 develop
-# Bug fixes only
+# Bug fixes only...
 git checkout main
 git merge release/1.2.0
 git checkout develop
 git merge release/1.2.0
+```
 
-# Hotfix branches
+**Hotfix branches** branch from `main`, merge into both `main` and `develop`:
+
+```bash
 git checkout -b hotfix/critical-bug main
-# Fix bug
+# Fix bug...
 git checkout main
 git merge hotfix/critical-bug
 git checkout develop
@@ -914,23 +727,15 @@ git merge hotfix/critical-bug
 
 ### Forking Workflow
 
-For open source projects:
+For open source contributions:
 
 ```bash
-# 1. Fork repository on GitHub
-# 2. Clone fork
 git clone https://github.com/yourfork/project.git
-
-# 3. Add upstream
 git remote add upstream https://github.com/original/project.git
-
-# 4. Create feature branch
 git checkout -b new-feature
-
-# 5. Make changes and push to fork
+# Work...
 git push origin new-feature
-
-# 6. Create Pull Request from fork to original repo
+# Create Pull Request from fork to original repo
 ```
 
 ---
@@ -939,154 +744,136 @@ git push origin new-feature
 
 ### What is Rebasing?
 
-Rebasing re-applies commits from one branch onto another, creating a linear history.
+Rebasing re-applies commits from one branch onto another, creating a **linear history** instead of merge commits.
 
 ### Merge vs Rebase
 
+**Merge** creates a merge commit:
+
 ```bash
-# Merge creates a merge commit
 git checkout main
 git merge feature-branch
+```
 
-# Rebase creates linear history
+**Rebase** creates linear history:
+
+```bash
 git checkout feature-branch
 git rebase main
 git checkout main
-git merge feature-branch  # Fast-forward merge
+git merge feature-branch              # Fast-forward merge
 ```
 
 ### Basic Rebase
 
 ```bash
-# Rebase current branch onto main
-git rebase main
-
-# Rebase specific branch
-git rebase main feature-branch
+git rebase main                       # Rebase current branch onto main
+git rebase main feature-branch        # Rebase specific branch
 ```
 
-### Interactive Rebase
+### Rebase Visualized
 
-```bash
-# Rebase last 3 commits interactively
-git rebase -i HEAD~3
+```
+Before rebase:
+  main:    A---B---C
+  feature:     D---E---F
 
-# Interactive rebase options:
-# pick - use commit as is
-# reword - change commit message
-# edit - modify commit
-# squash - combine with previous commit
-# fixup - like squash; combines the commit with the previous commit but automatically discards the fixup commit's message, keeping only the previous commit's message
-# drop - remove commit
+After `git checkout feature && git rebase main`:
+  main:    A---B---C
+  feature:         D'---E'---F'
 ```
 
-### Rebase Example
+### Golden Rule
 
-```bash
-# Before rebase:
-# main:    A---B---C
-# feature:     D---E---F
-
-git checkout feature
-git rebase main
-
-# After rebase:
-# main:    A---B---C
-# feature:         D'---E'---F'
-```
-
-### Golden Rule of Rebasing
-
-**Never rebase commits that have been pushed to a shared repository!**
+**Never rebase commits that have been pushed to a shared repository.**
 
 ### Handling Rebase Conflicts
 
 ```bash
-# Conflict during rebase
 git rebase main
-# Fix conflicts
+# Conflict occurs — fix the file, then:
 git add conflicted-file.txt
 git rebase --continue
 
-# Skip problematic commit
-git rebase --skip
-
-# Abort rebase
-git rebase --abort
+git rebase --skip                     # Skip problematic commit
+git rebase --abort                    # Cancel entire rebase
 ```
 
 ---
 
-## Cleaning Up History With Interactive Rebase
+## Interactive Rebase
 
-### Interactive Rebase Commands
+### Starting Interactive Rebase
 
 ```bash
-# Start interactive rebase
 git rebase -i HEAD~4
-
-# Example interactive rebase screen:
-pick 1234567 Add login feature
-reword 2345678 Fix typo in login
-squash 3456789 Update login styling
-drop 4567890 Debug logging
 ```
 
-### Common Interactive Rebase Tasks
+Editor opens showing your last 4 commits with action keywords:
 
-#### 1. Squashing Commits
+```
+pick 1234567 Add login feature
+pick 2345678 Fix typo in login
+pick 3456789 Update login styling
+pick 4567890 Debug logging
+```
 
-```bash
-git rebase -i HEAD~3
+### Available Actions
 
-# Change commits to:
+- `pick` — use commit as is
+- `reword` — change commit message
+- `edit` — stop and let you modify the commit
+- `squash` — combine with previous commit (edit combined message)
+- `fixup` — combine with previous commit (discard this message)
+- `drop` — remove commit entirely
+
+### Squashing Commits
+
+Combine multiple related commits into one:
+
+```
 pick 1234567 Add user authentication
 squash 2345678 Fix authentication bug
 squash 3456789 Add authentication tests
-
-# Result: One commit with all changes
 ```
 
-#### 2. Reordering Commits
+Result: One clean commit with all three changes.
 
-```bash
-# Original order:
-pick A Add feature X
-pick B Add feature Y
-pick C Fix feature X
+### Reordering Commits
 
-# Reorder to:
+Simply rearrange the lines:
+
+```
 pick A Add feature X
-pick C Fix feature X
-pick B Add feature Y
+pick C Fix feature X      ← moved up
+pick B Add feature Y      ← moved down
 ```
 
-#### 3. Editing Commits
+### Editing a Commit
 
-```bash
-git rebase -i HEAD~2
-
-# Change to:
+```
 edit 1234567 Add user profile
 pick 2345678 Update navigation
+```
 
-# Git stops at the edit commit
-# Make changes
+Git stops at the `edit` commit. Make changes, then:
+
+```bash
 git add modified-file.txt
 git commit --amend
 git rebase --continue
 ```
 
-#### 4. Splitting Commits
+### Splitting a Commit
+
+```
+edit 1234567 Large commit to split
+```
+
+When Git stops:
 
 ```bash
-git rebase -i HEAD~1
-
-# Change to:
-edit 1234567 Large commit to split
-
-# When Git stops:
-git reset HEAD~1  # Unstage changes
+git reset HEAD~1                      # Unstage changes
 git add file1.txt
 git commit -m "Add file1 functionality"
 git add file2.txt
@@ -1094,100 +881,78 @@ git commit -m "Add file2 functionality"
 git rebase --continue
 ```
 
-# Complete Git Rebase Tutorial
+---
 
-## Step 1: Create Repository and Initial Setup
+### Complete Rebase Walkthrough
+
+**Step 1**: Create a new repository:
 
 ```bash
-# Create and initialize repository
 mkdir git-rebase-demo
 cd git-rebase-demo
 git init
 ```
 
-**Output:**
+**Step 2**: Create initial commits on main.
 
-```
-Initialized empty Git repository in /path/to/git-rebase-demo/.git/
-```
-
-## Step 2: Create Initial Commits on Main Branch
+Create a file called `README.md` with the content `# My Project`, then:
 
 ```bash
-# Create first commit
-echo "# My Project" > README.md
 git add README.md
 git commit -m "Initial commit: Add README"
+```
 
-# Create second commit
-echo "print('Hello World')" > main.py
+Create a file called `main.py` with the content `print('Hello World')`, then:
+
+```bash
 git add main.py
 git commit -m "Add main.py file"
+```
 
-# Create third commit
-echo "# Installation" >> README.md
+Append `# Installation` to `README.md`, then:
+
+```bash
 git add README.md
 git commit -m "Update README with installation"
 ```
 
-**Check commit history:**
+**Step 3**: Create a feature branch:
 
 ```bash
-git log --oneline
-```
-
-**Output:**
-
-```
-c3d4e5f Update README with installation
-b2c3d4e Add main.py file
-a1b2c3d Initial commit: Add README
-```
-
-## Step 3: Create Feature Branch
-
-```bash
-# Create and switch to feature branch
 git checkout -b feature/user-input
 ```
 
-**Output:**
+**Step 4**: Add commits to the feature branch.
 
-```
-Switched to a new branch 'feature/user-input'
-```
-
-## Step 4: Add Commits to Feature Branch
+Append `name = input('Enter your name: ')` to `main.py`:
 
 ```bash
-# First feature commit
-echo "name = input('Enter your name: ')" >> main.py
 git add main.py
 git commit -m "Add user input for name"
+```
 
-# Second feature commit (with typo)
-echo "print('Hello', nam)" >> main.py
+Append `print('Hello', nam)` to `main.py` (intentional typo):
+
+```bash
 git add main.py
 git commit -m "Add greeting with typo"
+```
 
-# Third feature commit (fix typo)
-sed -i 's/nam/name/' main.py
+Fix the typo (`nam` → `name`):
+
+```bash
 git add main.py
 git commit -m "Fix typo in greeting"
+```
 
-# Fourth feature commit
-echo "print('Welcome to our app!')" >> main.py
+Append `print('Welcome to our app!')` to `main.py`:
+
+```bash
 git add main.py
 git commit -m "Add welcome message"
 ```
 
-**Check feature branch history:**
-
-```bash
-git log --oneline
-```
-
-**Output:**
+History now:
 
 ```
 h7i8j9k Add welcome message
@@ -1199,55 +964,36 @@ b2c3d4e Add main.py file
 a1b2c3d Initial commit: Add README
 ```
 
-## Step 5: Meanwhile, Main Branch Gets Updates
+**Step 5**: Meanwhile, main gets an update. Switch to main:
 
 ```bash
-# Switch back to main
 git checkout main
+```
 
-# Add new commit to main
-echo "Requirements: Python 3.6+" > requirements.txt
+Create a file called `requirements.txt` with the content `Requirements: Python 3.6+`, then:
+
+```bash
 git add requirements.txt
 git commit -m "Add requirements file"
 ```
 
-**Check main branch:**
+**Step 6**: Interactive rebase to clean up the feature branch:
 
 ```bash
-git log --oneline
-```
-
-**Output:**
-
-```
-d4e5f6g Add requirements file
-c3d4e5f Update README with installation
-b2c3d4e Add main.py file
-a1b2c3d Initial commit: Add README
-```
-
-## Step 6: Interactive Rebase to Clean Up Feature Branch
-
-```bash
-# Switch back to feature branch
 git checkout feature/user-input
-
-# Start interactive rebase for last 4 commits
 git rebase -i HEAD~4
 ```
 
-**Editor opens with:**
+Editor shows:
 
 ```
 pick e4f5g6h Add user input for name
 pick f5g6h7i Add greeting with typo
 pick g6h7i8j Fix typo in greeting
 pick h7i8j9k Add welcome message
-
-# Rebase c3d4e5f..h7i8j9k onto c3d4e5f (4 commands)
 ```
 
-**Edit to:**
+Change to:
 
 ```
 pick e4f5g6h Add user input for name
@@ -1256,24 +1002,7 @@ squash g6h7i8j Fix typo in greeting
 pick h7i8j9k Add welcome message
 ```
 
-**Save and close editor. New editor opens for commit message:**
-
-```
-# This is a combination of 3 commits.
-# This is the 1st commit message:
-
-Add user input for name
-
-# This is the commit message #2:
-
-Add greeting with typo
-
-# This is the commit message #3:
-
-Fix typo in greeting
-```
-
-**Edit to:**
+Save. In the next editor, replace the combined message with:
 
 ```
 Add user input and greeting functionality
@@ -1282,19 +1011,7 @@ Add user input and greeting functionality
 - Display personalized greeting
 ```
 
-**Output after rebase:**
-
-```
-Successfully rebased and updated refs/heads/feature/user-input.
-```
-
-**Check cleaned history:**
-
-```bash
-git log --oneline
-```
-
-**Output:**
+Cleaned history:
 
 ```
 i8j9k0l Add welcome message
@@ -1304,93 +1021,20 @@ b2c3d4e Add main.py file
 a1b2c3d Initial commit: Add README
 ```
 
-## Step 7: Rebase Feature Branch onto Updated Main
+**Step 7**: Rebase feature onto updated main:
 
 ```bash
-# Rebase feature branch onto main
 git rebase main
 ```
 
-**Output:**
-
-```
-Successfully rebased and updated refs/heads/feature/user-input.
-```
-
-**Check final history:**
+**Step 8**: Merge back to main (fast-forward):
 
 ```bash
-git log --oneline
-```
-
-**Output:**
-
-```
-k0l1m2n Add welcome message
-l1m2n3o Add user input and greeting functionality
-d4e5f6g Add requirements file
-c3d4e5f Update README with installation
-b2c3d4e Add main.py file
-a1b2c3d Initial commit: Add README
-```
-
-## Step 8: Verify the Changes
-
-```bash
-# Check the final main.py content
-cat main.py
-```
-
-**Output:**
-
-```
-print('Hello World')
-name = input('Enter your name: ')
-print('Hello', name)
-print('Welcome to our app!')
-```
-
-**Check branch structure:**
-
-```bash
-git log --oneline --graph --all
-```
-
-**Output:**
-
-```
-* k0l1m2n (HEAD -> feature/user-input) Add welcome message
-* l1m2n3o Add user input and greeting functionality
-* d4e5f6g (main) Add requirements file
-* c3d4e5f Update README with installation
-* b2c3d4e Add main.py file
-* a1b2c3d Initial commit: Add README
-```
-
-## Step 9: Merge Back to Main
-
-```bash
-# Switch to main and merge
 git checkout main
 git merge feature/user-input
 ```
 
-**Output:**
-
-```
-Updating d4e5f6g..k0l1m2n
-Fast-forward
- main.py | 3 +++
- 1 file changed, 3 insertions(+)
-```
-
-**Final check:**
-
-```bash
-git log --oneline
-```
-
-**Output:**
+Final linear history:
 
 ```
 k0l1m2n Add welcome message
@@ -1401,94 +1045,60 @@ b2c3d4e Add main.py file
 a1b2c3d Initial commit: Add README
 ```
 
-## Summary
+### Common Rebase Commands Reference
 
-- **Interactive rebase** (`git rebase -i`) cleaned up messy commits by squashing related changes
-- **Branch rebase** (`git rebase main`) moved feature commits on top of updated main branch
-- Result: Clean, linear history with logical commit groupings
-- **Fast-forward merge** was possible due to rebasing
-
-## Common Rebase Commands Reference
-
-- `git rebase -i HEAD~n` - Interactive rebase last n commits
-- `git rebase <branch>` - Rebase current branch onto target branch
-- `git rebase --continue` - Continue after resolving conflicts
-- `git rebase --abort` - Cancel rebase operation
-- `git push --force-with-lease` - Safely push rebased commits
+| Command | Purpose |
+|---|---|
+| `git rebase -i HEAD~n` | Interactive rebase last n commits |
+| `git rebase <branch>` | Rebase onto target branch |
+| `git rebase --continue` | Continue after resolving conflicts |
+| `git rebase --abort` | Cancel rebase |
+| `git push --force-with-lease` | Safely push rebased commits |
 
 ---
 
-## Git Tags: Marking Important Moments In History
+## Git Tags
 
 ### What are Tags?
 
-Tags mark specific points in Git history, typically used for releases.
+Tags mark specific points in history, typically used for releases.
 
-### Types of Tags
-
-#### 1. Lightweight Tags
+### Lightweight Tags
 
 ```bash
-# Create lightweight tag
-git tag v1.0
-
-# Tag specific commit
-git tag v1.0 <commit-hash>
+git tag v1.0                          # Tag current commit
+git tag v1.0 <commit-hash>            # Tag specific commit
 ```
 
-#### 2. Annotated Tags (Recommended)
+### Annotated Tags (Recommended)
 
 ```bash
-# Create annotated tag
 git tag -a v1.0 -m "Release version 1.0"
-
-# Tag with detailed message
-git tag -a v1.0 -m "
-Version 1.0 Release
-
-Features:
-- User authentication
-- Shopping cart
-- Payment processing
-"
 ```
 
 ### Working with Tags
 
 ```bash
-# List all tags
-git tag
-
-# List tags matching pattern
-git tag -l "v1.*"
-
-# Show tag information
-git show v1.0
-
-# Checkout specific tag
-git checkout v1.0
-
-# Delete tag
-git tag -d v1.0
+git tag                               # List all tags
+git tag -l "v1.*"                     # Filter tags
+git show v1.0                         # Show tag info
+git checkout v1.0                     # Checkout tag
+git tag -d v1.0                       # Delete tag
 ```
 
 ### Pushing Tags
 
 ```bash
-# Push specific tag
-git push origin v1.0
-
-# Push all tags
-git push origin --tags
-
-# Push annotated tags only
-git push --follow-tags
+git push origin v1.0                  # Push specific tag
+git push origin --tags                # Push all tags
+git push --follow-tags                # Push annotated tags only
 ```
 
-### Semantic Versioning with Tags
+### Semantic Versioning
+
+Format: `Major.Minor.Patch`
 
 ```bash
-# Major.Minor.Patch
 git tag -a v1.0.0 -m "Initial release"
 git tag -a v1.0.1 -m "Bug fix release"
 git tag -a v1.1.0 -m "Minor feature release"
@@ -1498,44 +1108,35 @@ git tag -a v2.0.0 -m "Major release with breaking changes"
 ### Release Workflow
 
 ```bash
-# 1. Finish features for release
 git checkout main
 git pull origin main
 
-# 2. Update version numbers in code
-# Edit package.json, version files, etc.
+# Update version numbers in your code files
 git add .
 git commit -m "Bump version to 1.2.0"
 
-# 3. Create release tag
 git tag -a v1.2.0 -m "Release version 1.2.0"
 
-# 4. Push changes and tags
 git push origin main
 git push origin v1.2.0
-
-# 5. Create GitHub release from tag
+# Create GitHub release from the tag
 ```
 
 ---
 
-## The Power of Reflogs - Retrieving "Lost" Work
+## Reflogs - Retrieving Lost Work
 
 ### What is Reflog?
 
-Reflog (reference log) tracks changes to branch tips and other references, acting as a safety net for "lost" commits.
+Reflog (reference log) tracks every change to branch tips and HEAD. It's your safety net for recovering "lost" work.
 
 ### Viewing Reflog
 
 ```bash
-# View reflog for current branch
-git reflog
-
-# View reflog for specific branch
-git reflog feature-branch
-
-# View reflog for all references
-git reflog --all
+git reflog                            # Current branch
+git reflog feature-branch             # Specific branch
+git reflog --all                      # All references
+git reflog --date=iso                 # With dates
 ```
 
 ### Reflog Output Example
@@ -1549,58 +1150,49 @@ def5678 HEAD@{1}: checkout: moving from main to feature-auth
 ### Recovering Lost Commits
 
 ```bash
-# Scenario: Accidentally reset hard
-git reset --hard HEAD~3  # Oops! Lost 3 commits
+# Accidentally ran:
+git reset --hard HEAD~3               # Lost 3 commits!
 
-# Find lost commits in reflog
+# Find them:
 git reflog
-# Output shows: abc1234 HEAD@{1}: commit: Important feature
+# Output: abc1234 HEAD@{1}: commit: Important feature
 
-# Recover the lost commit
+# Recover:
 git reset --hard abc1234
-# Or create new branch from lost commit
+# Or create a new branch:
 git branch recovery-branch abc1234
 ```
 
 ### Recovering Deleted Branches
 
 ```bash
-# Accidentally delete branch
-git branch -D important-feature  # Oops!
+# Accidentally deleted:
+git branch -D important-feature
 
-# Find branch in reflog
+# Find it:
 git reflog --all | grep important-feature
 
-# Recreate branch
+# Recreate:
 git branch important-feature <commit-hash>
+```
+
+### Recovering Deleted Files
+
+```bash
+git log --oneline --follow -- deleted-file.txt
+git checkout <commit-before-deletion>
+git checkout -b recover-file
+# File is present on this branch
 ```
 
 ### Reflog Expiration
 
+Entries expire after 90 days by default.
+
 ```bash
-# Reflog entries expire after 90 days by default
-# Configure expiration
 git config gc.reflogExpire "never"
 git config gc.reflogExpireUnreachable "never"
-
-# Manually clean reflog
 git reflog expire --expire=30.days refs/heads/main
-```
-
-### Advanced Reflog Usage
-
-```bash
-# View reflog with dates
-git reflog --date=iso
-
-# Find when file was deleted
-git log --oneline --follow -- deleted-file.txt
-git reflog --grep="deleted-file"
-
-# Recovery workflow
-git checkout <commit-before-deletion>
-git checkout -b recover-file
-# File should be present here
 ```
 
 ---
