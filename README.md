@@ -10,15 +10,17 @@
 6. [Merging Branches](#merging-branches)
 7. [Comparing Changes With Git Diff](#comparing-changes-with-git-diff)
 8. [Stashing](#stashing)
-9. [Undoing Changes & Time Traveling](#undoing-changes--time-traveling)
-10. [GitHub: The Basics](#github-the-basics)
-11. [Fetching & Pulling](#fetching--pulling)
-12. [GitHub Basics Part 2](#github-basics-part-2)
-13. [Git Collaboration Workflows](#git-collaboration-workflows)
-14. [Rebasing](#rebasing)
-15. [Interactive Rebase](#interactive-rebase)
-16. [Git Tags](#git-tags)
-17. [Reflogs - Retrieving Lost Work](#reflogs---retrieving-lost-work)
+9. [.gitignore](#gitignore)
+10. [Undoing Changes & Time Traveling](#undoing-changes--time-traveling)
+11. [GitHub: The Basics](#github-the-basics)
+12. [Fetching & Pulling](#fetching--pulling)
+13. [GitHub Basics Part 2](#github-basics-part-2)
+14. [Git Collaboration Workflows](#git-collaboration-workflows)
+15. [Rebasing](#rebasing)
+16. [Interactive Rebase](#interactive-rebase)
+17. [Cherry-Pick](#cherry-pick)
+18. [Git Tags](#git-tags)
+19. [Reflogs - Retrieving Lost Work](#reflogs---retrieving-lost-work)
 
 ---
 
@@ -67,9 +69,14 @@ sudo apt install git
 ### Initial Configuration
 
 ```bash
+# Set your name and email (required for commits)
 git config --global user.name "Your Name"
 git config --global user.email "your.email@example.com"
+
+# Set default branch name
 git config --global init.defaultBranch main
+
+# Check your configuration
 git config --list
 ```
 
@@ -94,6 +101,8 @@ git config --global core.editor "code --wait"
 ```bash
 mkdir my-project
 cd my-project
+
+# Initialize Git repository
 git init
 ```
 
@@ -106,14 +115,17 @@ git init
 ### Basic Workflow
 
 ```bash
+# Check repository status
 git status
 
 git add filename.txt          # Stage specific file
 git add .                     # Stage all files
 git add *.js                  # Stage all JavaScript files
 
+# Commit changes
 git commit -m "Initial commit"
 
+# View commit history
 git log
 git log --oneline             # Condensed view
 ```
@@ -318,6 +330,14 @@ git add file.txt
 git commit
 ```
 
+### Major Types of Merge Conflicts
+
+1. **Content Conflict**: Two branches modify the same line differently, or one modifies a line the other deletes
+2. **File Add/Delete Conflict**: One branch deletes a file while the other modifies it
+3. **File Rename Conflict**: A file is renamed differently in two branches
+4. **Directory/File Conflict**: One branch creates a file and the other creates a directory with the same name
+5. **Binary File Conflict**: Two branches modify a binary file differently (Git cannot auto-merge binary files)
+
 ### Merge Strategies
 
 ```bash
@@ -343,7 +363,7 @@ git commit -m "Merged file from branch_name into main"
 ### Basic Diff Commands
 
 ```bash
-git diff                              # Unstaged changes
+git diff                              # Show Unstaged changes
 git diff --staged                     # Staged changes
 git diff --cached                     # Same as --staged
 git diff filename.txt                 # Specific file
@@ -438,6 +458,59 @@ git stash pop
 
 ---
 
+## .gitignore
+
+### What is .gitignore?
+
+`.gitignore` is a special file that tells Git which files and directories to ignore. Files listed in `.gitignore` won't be tracked, even if they exist in your working directory. This is useful for excluding temporary files, build outputs, environment configs, and sensitive data.
+
+### Common .gitignore Patterns
+
+```
+# Environment variables
+.env
+
+# Dependencies
+node_modules/
+**/node_modules
+
+# Build output
+dist/
+build/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# IDE files
+.vscode/
+.idea/
+
+# Logs
+*.log
+
+# Temp files starting with "temp"
+temp*
+```
+
+### .gitignore Workflow Example
+
+1. Create a `.gitignore` file in your project root.
+
+2. Add patterns for files you want to ignore (e.g., `.env`).
+
+3. Create the ignored file (e.g., `.env` with `SECRET_KEY="mysecret"`).
+
+4. Verify it's ignored:
+
+```bash
+git status                            # .env should not appear
+```
+
+> **Note**: `.gitignore` only ignores files that are **not yet tracked**. If a file is already tracked by Git, adding it to `.gitignore` won't stop tracking it. You need to remove it from tracking first: `git rm --cached filename`.
+
+---
+
 ## Undoing Changes & Time Traveling
 
 ### Undoing Working Directory Changes
@@ -478,6 +551,45 @@ git revert <commit-hash>              # Undo specific commit
 
 - **Reset**: You haven't pushed yet and want to redo commits
 - **Revert**: You've already pushed and need to undo safely
+
+### HEAD and Detached HEAD
+
+**HEAD** is a special pointer that represents your current position in the repository's history. It typically points to the tip of the current branch, indicating which commit you're currently viewing or working with.
+
+**Detached HEAD** occurs when HEAD points directly to a commit instead of a branch. This happens when you check out a specific commit, tag, or remote branch:
+
+```bash
+git checkout <commit-hash>            # Enters detached HEAD state
+```
+
+In detached HEAD state, any new commits won't belong to any branch and can be lost when you switch branches (eventually removed by garbage collection).
+
+**Recovering from Detached HEAD:**
+
+```bash
+# Option 1: Create a branch from detached state
+git checkout -b <new-branch-name>
+
+# Option 2: If you already switched away
+git checkout -b <new-branch-name> <commit-hash>
+```
+
+> **Tip**: To inspect a commit without detaching HEAD, use `git log` or `git show <commit-hash>` instead of `git checkout`.
+
+### Cleaning Untracked Files
+
+To remove untracked files from your working directory:
+
+```bash
+git clean -dn                         # Dry-run (preview what would be removed)
+git clean -df                         # Actually remove untracked files and dirs
+```
+
+- `-d` includes untracked directories
+- `-f` forces the removal
+- `-n` performs a dry-run without deleting
+
+> **Caution**: `git clean` permanently deletes files not tracked by Git. Always run with `-dn` first to preview.
 
 ---
 
@@ -599,6 +711,50 @@ git rebase main
 
 # Push
 git push origin feature-user-profile
+```
+
+### Understanding Remote-Tracking Branches
+
+Remote-tracking branches (e.g., `remotes/origin/main`) are local read-only snapshots that reflect the state of branches on the remote the last time you connected. They update in three ways:
+
+1. **`git fetch`** — Downloads new commits and updates **all** `remotes/origin/*` branches. Does **not** change your local working files or branches.
+2. **`git pull`** — Performs a `git fetch` followed by a merge (or rebase) into your **current** branch only.
+3. **`git push`** — Sends local commits to the remote and updates the corresponding `remotes/origin/<branch>` for the pushed branch only.
+
+`remotes/origin/HEAD -> origin/main` indicates which remote branch is the default (usually `main` or `master`).
+
+### Force Push After Rebase
+
+After a rebase, Git rewrites commit history (new hashes). A regular `git push` will fail with a "non-fast-forward" error because your local history no longer matches the remote. Use force push to overwrite:
+
+```bash
+git push -f                           # Force push (use with caution)
+git push --force-with-lease           # Safer — fails if remote has new commits
+```
+
+> **Warning**: Force-pushing can overwrite others' work if you're not the only one working on the branch. Prefer `--force-with-lease` on shared branches.
+
+### Understanding `git push -u`
+
+The `-u` flag (`--set-upstream`) links your local branch with a remote branch. Without it, future `git pull` or `git push` commands require specifying the remote and branch name every time:
+
+```bash
+git push -u origin feature-xyz        # Sets tracking + pushes
+# After this, you only need:
+git push                              # Knows where to push
+git pull                              # Knows where to pull from
+```
+
+You only need to use `-u` once when creating and pushing a new branch.
+
+### Pushing to a Different Remote Branch Name
+
+If your local branch name differs from the desired remote branch name:
+
+```bash
+git push -u origin local-branch:remote-branch
+# Example: push local 'feature' as 'payment' on remote
+git push -u origin feature:payment
 ```
 
 ---
@@ -1047,13 +1203,50 @@ a1b2c3d Initial commit: Add README
 
 ### Common Rebase Commands Reference
 
-| Command | Purpose |
-|---|---|
-| `git rebase -i HEAD~n` | Interactive rebase last n commits |
-| `git rebase <branch>` | Rebase onto target branch |
-| `git rebase --continue` | Continue after resolving conflicts |
-| `git rebase --abort` | Cancel rebase |
-| `git push --force-with-lease` | Safely push rebased commits |
+| Command                       | Purpose                            |
+| ----------------------------- | ---------------------------------- |
+| `git rebase -i HEAD~n`        | Interactive rebase last n commits  |
+| `git rebase <branch>`         | Rebase onto target branch          |
+| `git rebase --continue`       | Continue after resolving conflicts |
+| `git rebase --abort`          | Cancel rebase                      |
+| `git push --force-with-lease` | Safely push rebased commits        |
+
+---
+
+## Cherry-Pick
+
+### What is Cherry-Pick?
+
+Cherry-pick applies the changes from a specific commit onto your current branch, creating a new commit. It's useful when you want a particular change without merging an entire branch.
+
+### Basic Cherry-Pick
+
+```bash
+git cherry-pick <commit-hash>         # Apply a single commit
+```
+
+### Cherry-Picking Multiple Commits
+
+```bash
+git cherry-pick <hash1> <hash2>       # Pick multiple specific commits
+git cherry-pick <start>..<end>        # Pick a range of commits
+```
+
+### Handling Cherry-Pick Conflicts
+
+```bash
+# If conflicts occur during cherry-pick:
+git add resolved-file.txt
+git cherry-pick --continue
+
+git cherry-pick --abort                # Cancel the cherry-pick
+```
+
+### Cherry-Pick Use Cases
+
+- Backporting a bug fix from a development branch to a release branch
+- Applying a specific feature commit without merging unrelated changes
+- Recovering a useful commit from a branch that was deleted
 
 ---
 
