@@ -26,11 +26,9 @@
 
 ## Introducing Git
 
-Git is a **distributed version control system** created by Linus Torvalds in 2005. Every user has a complete copy of the project history.
+Git is a distributed version control system created by Linus Torvalds in 2005. Every user has a complete copy of the project history. Your project lives in a repository, which holds both your files and all of Git's tracking information. As you work, you stage changes in a staging area and then save them as commits — snapshots of your project at a point in time. You can create branches to develop features in isolation and use remotes to sync your work with others.
 
-**Key Concepts**: Repository (project + tracking info), Staging Area, Commits (snapshots), Branches, Remotes.
-
-**Why Git?** Track history, collaborate, branch for features, revert mistakes, backup code.
+Git lets you track the full history of your project, collaborate with multiple developers, experiment on separate branches without risk, revert to earlier versions when something breaks, and keep your code backed up across multiple locations.
 
 ---
 
@@ -62,7 +60,9 @@ git config --global core.editor "code --wait"
 
 ### The Three Areas
 
-1. **Working Directory** → 2. **Staging Area** → 3. **Repository (.git/)**
+1. **Working Directory**
+2. **Staging Area**
+3. **Repository (.git/)**
 
 ### Basic Workflow
 
@@ -82,7 +82,7 @@ git log --oneline                     # View history
 
 ## Commits In Detail
 
-Each commit has: **SHA-1 hash**, author, date, message, and parent reference.
+Each commit has: SHA-1 hash, author, date, message, and parent reference.
 
 ### Writing Good Commit Messages
 
@@ -201,7 +201,7 @@ build/
 *.log
 ```
 
-> **Note**: `.gitignore` only ignores **untracked** files. Already-tracked files need `git rm --cached filename` first.
+> **Note**: `.gitignore` only ignores untracked files. Already-tracked files need `git rm --cached filename` first.
 
 ---
 
@@ -377,7 +377,7 @@ git checkout -b hotfix/critical-bug main
 
 ## Rebasing
 
-Rebasing re-applies commits onto another branch, creating **linear history**.
+Rebasing re-applies commits onto another branch, creating linear history.
 
 ```bash
 git checkout feature-branch
@@ -496,5 +496,3 @@ git branch -D important-feature       # Oops!
 git reflog --all | grep important-feature
 git branch important-feature <commit-hash>
 ```
-
----
