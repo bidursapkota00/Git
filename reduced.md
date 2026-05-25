@@ -54,6 +54,8 @@ git config --global user.name "Your Name"
 git config --global user.email "your.email@example.com"
 git config --global init.defaultBranch main
 git config --global core.editor "code --wait"
+
+git config --list
 ```
 
 ---
@@ -78,6 +80,8 @@ git add .                             # Stage all files
 git commit -m "Initial commit"        # Commit
 
 git log --oneline                     # View history
+
+git log --oneline --graph --all       # View branches/history in graph
 ```
 
 ---
