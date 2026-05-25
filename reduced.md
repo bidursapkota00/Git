@@ -45,6 +45,8 @@ sudo apt update && sudo apt install git
 git --version
 ```
 
+**Windows**: Download from [git-scm.com](https://git-scm.com), run installer with default settings, open Git Bash or Command Prompt.
+
 ### Initial Configuration
 
 ```bash
@@ -255,19 +257,19 @@ git clean -df                         # Remove
 
 ## GitHub: The Basics
 
-### SSH Key Setup
+GitHub is a cloud-based Git hosting service that adds collaboration features, issue tracking, and project management.
+
+### Remove Stored Credentials
 
 ```bash
-ssh-keygen -t ed25519 -C "your.email@example.com"
-eval "$(ssh-agent -s)"
-ssh-add ~/.ssh/id_ed25519
-cat ~/.ssh/id_ed25519.pub              # Copy to GitHub → Settings → SSH Keys
+git config --global --unset credential.helper
+git push origin main                  # User brwoser based auth
 ```
 
 ### Repository Operations
 
 ```bash
-git clone git@github.com:user/repo.git            # Clone (SSH)
+git clone https://github.com/user/repo.git         # Clone
 git remote add origin <url>
 git remote -v                                      # Check remotes
 git push -u origin main                            # Set upstream + push
@@ -331,12 +333,6 @@ git merge upstream/main
 git push origin main
 ```
 
-### Pull Requests
-
-- Descriptive titles and descriptions
-- Reference issues with `#issue-number`
-- Use draft PRs for work in progress
-
 ### GitHub Pages
 
 Push to a `gh-pages` branch → site at `https://username.github.io/repo-name`.
@@ -386,11 +382,6 @@ git checkout main
 git merge feature-branch              # Fast-forward merge
 ```
 
-```
-Before:  main: A---B---C     feature: D---E---F
-After:   main: A---B---C     feature:     D'---E'---F'
-```
-
 **Golden Rule**: Never rebase commits already pushed to a shared repo.
 
 ### Handling Conflicts
@@ -412,14 +403,14 @@ git rebase -i HEAD~4
 
 ### Actions
 
-| Action    | Effect                                        |
-| --------- | --------------------------------------------- |
-| `pick`    | Use commit as-is                              |
-| `reword`  | Change commit message                         |
-| `squash`  | Combine with previous (edit combined message) |
-| `fixup`   | Combine with previous (discard this message)  |
-| `drop`    | Remove commit                                 |
-| `edit`    | Pause to amend the commit                     |
+| Action   | Effect                                        |
+| -------- | --------------------------------------------- |
+| `pick`   | Use commit as-is                              |
+| `reword` | Change commit message                         |
+| `squash` | Combine with previous (edit combined message) |
+| `fixup`  | Combine with previous (discard this message)  |
+| `drop`   | Remove commit                                 |
+| `edit`   | Pause to amend the commit                     |
 
 ### Squashing Example
 
