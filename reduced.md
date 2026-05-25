@@ -263,7 +263,7 @@ GitHub is a cloud-based Git hosting service that adds collaboration features, is
 
 ```bash
 git config --global --unset credential.helper
-git push origin main                  # User brwoser based auth
+git push origin main                  # Use brwoser based auth
 ```
 
 ### Repository Operations
