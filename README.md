@@ -47,6 +47,8 @@ git --version
 
 **Windows**: Download from [git-scm.com](https://git-scm.com), run installer with default settings, open Git Bash or Command Prompt.
 
+**Also install vscode extension: GitLens by GitKraken**
+
 ### Initial Configuration
 
 ```bash
