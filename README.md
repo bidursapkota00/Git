@@ -1,4 +1,8 @@
-# Complete Git Self-Help Guide
+# Git & GitHub Complete Guide
+
+![Bidur Sapkota](https://www.bidursapkota.com.np/images/gravatar.webp "Bidur Sapkota - Developer")&nbsp;[Bidur Sapkota](https://www.bidursapkota.com.np/)
+
+![Git & GitHub Complete Guide by Bidur Sapkota](/images/git-1200.webp "Git & GitHub Complete Guide – Blog by Bidur Sapkota")
 
 ## Table of Contents
 
